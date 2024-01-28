@@ -41,5 +41,10 @@ public class UserQueueService {
     }
 
     // 진입이 가능한 상태인지 조회
+    public Mono<Boolean> isAllowed(final String queue, final Long userId) {
+        return reactiveRedisTemplate.opsForZSet().rank(USER_QUEUE_PROCEED_KEY.formatted(queue), userId.toString())
+                .defaultIfEmpty(-1L)
+                .map(rank -> rank >= 0);
+    }
 
 }

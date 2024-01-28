@@ -1,13 +1,11 @@
 package junseok.snr.flow.controller;
 
 import junseok.snr.flow.dto.AllowUserResponse;
+import junseok.snr.flow.dto.AllowedUserResponse;
 import junseok.snr.flow.dto.RegisterUserResponse;
 import junseok.snr.flow.service.UserQueueService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -29,5 +27,12 @@ public class UserQueueController {
                                              @RequestParam(name = "count") Long count) {
         return userQueueService.allowUser(queue, count)
                 .map(allowed -> new AllowUserResponse(count, allowed));
+    }
+
+    @GetMapping("/allowed")
+    public Mono<AllowedUserResponse> isAllowedUser(@RequestParam(name = "queue", defaultValue = "default") String queue,
+                                                 @RequestParam(name = "user_id") Long userId) {
+        return userQueueService.isAllowed(queue, userId)
+                .map(AllowedUserResponse::new);
     }
 }
