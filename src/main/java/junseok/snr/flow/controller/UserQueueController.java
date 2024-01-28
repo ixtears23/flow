@@ -1,5 +1,6 @@
 package junseok.snr.flow.controller;
 
+import junseok.snr.flow.dto.RegisterUserResponse;
 import junseok.snr.flow.service.UserQueueService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +17,8 @@ public class UserQueueController {
 
     // 등록 할 수 있는 API path
     @PostMapping("")
-    public Mono<?> registerUser(@RequestParam(name = "user_id") Long userId) {
-        return userQueueService.registerWaitQueue(userId);
+    public Mono<RegisterUserResponse> registerUser(@RequestParam(name = "user_id") Long userId) {
+        return userQueueService.registerWaitQueue(userId)
+                .map(RegisterUserResponse::new);
     }
 }
