@@ -2,6 +2,7 @@ package junseok.snr.flow.controller;
 
 import junseok.snr.flow.dto.AllowUserResponse;
 import junseok.snr.flow.dto.AllowedUserResponse;
+import junseok.snr.flow.dto.RankNumberResponse;
 import junseok.snr.flow.dto.RegisterUserResponse;
 import junseok.snr.flow.service.UserQueueService;
 import lombok.RequiredArgsConstructor;
@@ -34,5 +35,12 @@ public class UserQueueController {
                                                  @RequestParam(name = "user_id") Long userId) {
         return userQueueService.isAllowed(queue, userId)
                 .map(AllowedUserResponse::new);
+    }
+
+    @GetMapping("/rank")
+    public Mono<RankNumberResponse> getRank(@RequestParam(name = "queue", defaultValue = "default") String queue,
+                                            @RequestParam(name = "user_id") Long userId) {
+        return userQueueService.getRank(queue, userId)
+                .map(RankNumberResponse::new);
     }
 }
