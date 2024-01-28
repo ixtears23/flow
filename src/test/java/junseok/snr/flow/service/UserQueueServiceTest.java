@@ -2,10 +2,12 @@ package junseok.snr.flow.service;
 
 import junseok.snr.flow.EmbeddedRedis;
 import junseok.snr.flow.exception.ApplicationException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.redis.connection.ReactiveRedisConnection;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import reactor.test.StepVerifier;
@@ -21,6 +23,12 @@ class UserQueueServiceTest {
 
     @Autowired
     private ReactiveRedisTemplate<String, String> reactiveRedisTemplate;
+
+    @BeforeEach
+    public void beforeEach() {
+        final ReactiveRedisConnection reactiveConnection = reactiveRedisTemplate.getConnectionFactory().getReactiveConnection();
+        reactiveConnection.serverCommands().flushAll().subscribe();
+    }
 
     @Test
     void registerWaitQueue() {
