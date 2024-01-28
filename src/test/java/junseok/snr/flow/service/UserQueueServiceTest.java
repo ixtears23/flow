@@ -69,7 +69,7 @@ class UserQueueServiceTest {
                         .then(userQueueService.registerWaitQueue("default", 101L))
                         .then(userQueueService.registerWaitQueue("default", 102L))
                         .then(userQueueService.allowUser("default", 3L)))
-                .expectNext(2L)
+                .expectNext(3L)
                 .verifyComplete();
     }
 
